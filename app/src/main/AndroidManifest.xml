@@ -28,6 +28,7 @@
         <activity android:name=".progress.ProgressActivity" />
         <activity android:name=".custom.CustomActivity" />
         <activity android:name=".my.MultiActivity" />
+        <activity android:name=".partner.PartnerActivity" />
     </application>
 
 </manifest>
