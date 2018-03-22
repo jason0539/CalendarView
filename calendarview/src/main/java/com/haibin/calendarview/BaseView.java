@@ -322,4 +322,8 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
     }
 
     abstract void update();
+    
+    public CustomCalendarViewDelegate getDelegate() {
+        return mDelegate;
+    }
 }
