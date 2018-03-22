@@ -288,7 +288,7 @@ public final class Util {
         return curTime >= minTime && curTime <= maxTime;
     }
 
-    static boolean isCalendarInRange(Calendar calendar, CustomCalendarViewDelegate delegate) {
+    public static boolean isCalendarInRange(Calendar calendar, CustomCalendarViewDelegate delegate) {
         return isCalendarInRange(calendar, delegate.getMinYear(), delegate.getMinYearMonth(),delegate.getMinYearMonthDay(),
                 delegate.getMaxYear(), delegate.getMaxYearMonth(),delegate.getMaxYearMonthDay());
     }
