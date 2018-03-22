@@ -107,9 +107,9 @@ public final class MonthViewPager extends ViewPager {
             @Override
             public void onPageSelected(int position) {
                 Calendar calendar = new Calendar();
-                calendar.setYear((position + mDelegate.getMinYearMonth() - 1) / 12 + mDelegate.getMinYear());
-                calendar.setMonth((position + mDelegate.getMinYearMonth() - 1) % 12 + 1);
-                calendar.setDay(1);
+                calendar.setYear(mDelegate.getCurrentDay().getYear());
+                calendar.setMonth(mDelegate.getCurrentDay().getMonth());
+                calendar.setDay(mDelegate.getCurrentDay().getDay());
                 calendar.setCurrentMonth(calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
                         calendar.getMonth() == mDelegate.getCurrentDay().getMonth());
                 calendar.setCurrentDay(calendar.equals(mDelegate.getCurrentDay()));
