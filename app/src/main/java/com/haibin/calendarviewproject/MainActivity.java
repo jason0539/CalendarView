@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
+import com.haibin.calendarview.Util;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.custom.CustomActivity;
@@ -89,6 +90,24 @@ public class MainActivity extends BaseActivity implements
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
         mTextLunar.setText("今日");
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
+        initRange();
+    }
+
+    private void initRange() {
+        int curDay = mCalendarView.getCurDay();
+        int curMonth = mCalendarView.getCurMonth();
+        int curYear = mCalendarView.getCurYear();
+
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(curYear, curMonth, curDay);
+        long timeInMillis = date.getTimeInMillis();
+        timeInMillis += Util.ONE_DAY * 14;
+        date.setTimeInMillis(timeInMillis);
+
+        int maxYear = date.get(java.util.Calendar.YEAR);
+        int maxMonth = date.get(java.util.Calendar.MONTH);
+        int maxDay = date.get(java.util.Calendar.DATE);
+        mCalendarView.setRange(curYear, curMonth, curDay, maxYear, maxMonth,maxDay);
     }
 
     @Override

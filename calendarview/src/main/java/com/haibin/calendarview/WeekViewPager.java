@@ -91,8 +91,8 @@ public final class WeekViewPager extends ViewPager {
     }
 
     void notifyDataSetChanged() {
-        mWeekCount = Util.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
-                mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
+        mWeekCount = Util.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),mDelegate.getMinYearMonthDay(),
+                mDelegate.getMaxYear(), mDelegate.getMaxYearMonth(),mDelegate.getMaxYearMonthDay());
         getAdapter().notifyDataSetChanged();
     }
 
@@ -128,7 +128,7 @@ public final class WeekViewPager extends ViewPager {
         isUsingScrollToCalendar = true;
         int position = Util.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(),
                 mDelegate.getMinYear(),
-                mDelegate.getMinYearMonth()) - 1;
+                mDelegate.getMinYearMonth(),1) - 1;
         int curItem = getCurrentItem();
         if (curItem == position) {
             isUsingScrollToCalendar = false;
@@ -149,7 +149,7 @@ public final class WeekViewPager extends ViewPager {
      * 更新任意一个选择的日期
      */
     void updateSelected(Calendar calendar, boolean smoothScroll) {
-        int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mDelegate.getMinYear(), mDelegate.getMinYearMonth()) - 1;
+        int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mDelegate.getMinYear(), mDelegate.getMinYearMonth(),mDelegate.getMinYearMonthDay()) - 1;
         int curItem = getCurrentItem();
         if (curItem == position) {
             isUsingScrollToCalendar = false;
@@ -199,7 +199,7 @@ public final class WeekViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Calendar calendar = Util.getFirstCalendarFromWeekCount(mDelegate.getMinYear(), mDelegate.getMinYearMonth(), position + 1);
+            Calendar calendar = Util.getFirstCalendarFromWeekCount(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),mDelegate.getMinYearMonthDay(), position + 1);
             WeekView view;
             if (TextUtils.isEmpty(mDelegate.getWeekViewClass())) {
                 view = new DefaultWeekView(getContext());

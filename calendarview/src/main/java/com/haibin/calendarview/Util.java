@@ -24,9 +24,9 @@ import java.util.Date;
 /**
  * 一些辅助计算工具
  */
-final class Util {
+public final class Util {
 
-    private static final long ONE_DAY = 1000 * 3600 * 24;
+    public static final long ONE_DAY = 1000 * 3600 * 24;
 
     @SuppressLint("SimpleDateFormat")
     static int getDate(String formatStr, Date date) {
@@ -231,13 +231,29 @@ final class Util {
     }
 
     /**
-     * 根据日期获取两个年份中第几周
-     *
-     * @param calendar calendar
-     * @param minYear  minYear
-     * @return 返回两个年份中第几周
+     * 获取两个日期之间一共有多少周
      */
-    static int getWeekFromCalendarBetweenYearAndYear(Calendar calendar, int minYear, int minYearMonth) {
+    static int getWeekCountBetweenYearAndYear(int minYear, int minYearMonth, int minYearMonthDay,int maxYear, int maxYearMonth,int maxYearMonthDay) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(minYear, minYearMonth - 1, minYearMonthDay);
+        long minTime = date.getTimeInMillis();//给定时间戳
+        int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//星期天 == 0，拿到本周内这一天之前的天数，用于计算一共要显示几周
+        date.set(maxYear, maxYearMonth - 1, maxYearMonthDay);
+        long maxTime = date.getTimeInMillis();//给定时间戳
+        int nextDiff = 7 - date.get(java.util.Calendar.DAY_OF_WEEK);//星期天 == 0，拿到本周内这一天之后的天数，用于计算一共要显示几周
+        int count = preDiff + nextDiff;
+        int c = (int) ((maxTime - minTime) / ONE_DAY) + 1;
+        count += c;
+        return count / 7;
+    }
+
+    /**
+     * 获取指定日期距离某个日期的周数
+     * calendar是指定日期
+     * 后三个年月日指定基准日期
+     * 返回两日期的偏移周数量
+     */
+    static int getWeekFromCalendarBetweenYearAndYear(Calendar calendar, int minYear, int minYearMonth,int minYearMonthDay) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(minYear, 0, 1);//1月1日
         long firstTime = date.getTimeInMillis();//获得起始时间戳
@@ -246,7 +262,7 @@ final class Util {
         long curTime = date.getTimeInMillis();//给定时间戳
         int c = (int) ((curTime - firstTime) / ONE_DAY);
         int count = preDiff + c;
-        int weekDiff = getWeekCountDiff(minYear, minYearMonth);
+        int weekDiff = getWeekCountDiff(minYear, minYearMonth,minYearMonthDay);
         return count / 7 - weekDiff;
     }
 
@@ -295,18 +311,16 @@ final class Util {
     }
 
     /**
-     * 根据星期数和最小年份推算出该星期的第一天
+     * 根据某天和该天的第几周推算出这个“第几周”的周日日期
      *
-     * @param minYear      最小年份如2017
-     * @param minYearMonth maxYear 最小年份月份，like : 2017-07
-     * @param week         从最小年份1月1日开始的第几周
-     * @return 该星期的第一天日期
+     * 参数指定日期的年月日和期望得到的第week周
+     * @return 返回“第week周”该星期的第一天日期
      */
-    static Calendar getFirstCalendarFromWeekCount(int minYear, int minYearMonth, int week) {
+    static Calendar getFirstCalendarFromWeekCount(int minYear, int minYearMonth, int minYearMonthDay, int week) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(minYear, 0, 1);//1月1日
         long firstTime = date.getTimeInMillis();//获得起始时间戳
-        int dayCount = (week + getWeekCountDiff(minYear, minYearMonth)) * 7 + 1;
+        int dayCount = (week + getWeekCountDiff(minYear, minYearMonth, minYearMonthDay)) * 7 + 1;
         long timeCount = dayCount * ONE_DAY + firstTime;
         date.setTimeInMillis(timeCount);
         Calendar calendar = new Calendar();
@@ -318,23 +332,21 @@ final class Util {
 
 
     /**
-     * 获取星期偏移了多少周
-     *
-     * @param minYear      minYear
-     * @param minYearMonth minYearMonth
-     * @return 获取星期偏移了多少周
+     * 该日期是该年的第多少周
+     *  参数指定日期的年月日
+     * @return 该日是当年的第几周
      */
-    static int getWeekCountDiff(int minYear, int minYearMonth) {
+    static int getWeekCountDiff(int minYear, int minYearMonth, int minYearMonthDay) {
         if (minYearMonth == 1) {
             return -1;
         }
         java.util.Calendar date = java.util.Calendar.getInstance();
-        date.set(minYear, 0, 1);//1月1日
+        date.set(minYear, 0, 1);//该年第一天（1月1日）
         long firstTime = date.getTimeInMillis();//获得起始时间戳
-        int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
-        date.set(minYear, minYearMonth - 1, 1);
-        long minTime = date.getTimeInMillis();//获得时间戳
-        int nextDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//minYearMonth月第一天为星期几,星期天 == 0，也就是偏移量
+        int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是这一天在这周的偏移量
+        date.set(minYear, minYearMonth - 1, minYearMonthDay);
+        long minTime = date.getTimeInMillis();//获得指定这一天的时间戳
+        int nextDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//指定这一天在这周的偏移量
         int c = (int) ((minTime - firstTime) / ONE_DAY) - 1;
         int count = preDiff + c - nextDiff;
         return count / 7;

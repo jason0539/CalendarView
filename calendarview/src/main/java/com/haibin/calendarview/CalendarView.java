@@ -199,10 +199,10 @@ public class CalendarView extends FrameLayout {
      * @param maxYear      最大月份
      * @param maxYearMonth 最大月份对应月份
      */
-    public void setRange(int minYear, int minYearMonth,
-                         int maxYear, int maxYearMonth) {
-        mDelegate.setRange(minYear, minYearMonth,
-                maxYear, maxYearMonth);
+    public void setRange(int minYear, int minYearMonth,int minYearMonthDay,
+                         int maxYear, int maxYearMonth,int maxYearMonthDay) {
+        mDelegate.setRange(minYear, minYearMonth, minYearMonthDay,
+                maxYear, maxYearMonth, maxYearMonthDay);
         mWeekPager.notifyDataSetChanged();
         mSelectLayout.notifyDataSetChanged();
         mMonthPager.notifyDataSetChanged();

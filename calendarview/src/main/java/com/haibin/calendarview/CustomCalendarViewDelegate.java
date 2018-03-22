@@ -141,6 +141,8 @@ final class CustomCalendarViewDelegate {
      */
     private int mMinYearMonth, mMaxYearMonth;
 
+    private int mMinYearMonthDay, mMaxYearMonthDay;
+
     /**
      * 日期和农历文本大小
      */
@@ -271,22 +273,24 @@ final class CustomCalendarViewDelegate {
         mCurrentDate.setDay(Util.getDate("dd", d));
         mCurrentDate.setCurrentDay(true);
         LunarCalendar.setupLunarCalendar(mCurrentDate);
-        setRange(mMinYear, mMinYearMonth, mMaxYear, mMaxYearMonth);
+        setRange(mMinYear, mMinYearMonth,1, mMaxYear, mMaxYearMonth,Util.getMonthDaysCount(mMaxYear, mMaxYearMonth));
     }
 
 
-    void setRange(int minYear, int minYearMonth,
-                  int maxYear, int maxYearMonth) {
+    void setRange(int minYear, int minYearMonth, int minYearMonthDay,
+                  int maxYear, int maxYearMonth, int maxYearMonthDay) {
         this.mMinYear = minYear;
         this.mMinYearMonth = minYearMonth;
+        this.mMinYearMonthDay = minYearMonthDay;
         this.mMaxYear = maxYear;
         this.mMaxYearMonth = maxYearMonth;
+        this.mMaxYearMonthDay = maxYearMonthDay;
         if (this.mMaxYear < mCurrentDate.getYear()) {
             this.mMaxYear = mCurrentDate.getYear();
         }
         int y = mCurrentDate.getYear() - this.mMinYear;
         mCurrentMonthViewItem = 12 * y + mCurrentDate.getMonth() - this.mMinYearMonth;
-        mCurrentWeekViewItem = Util.getWeekFromCalendarBetweenYearAndYear(mCurrentDate, mMinYear, mMinYearMonth);
+        mCurrentWeekViewItem = Util.getWeekFromCalendarBetweenYearAndYear(mCurrentDate, mMinYear, mMinYearMonth, mMinYearMonthDay);
     }
 
     String getSchemeText() {
@@ -396,6 +400,14 @@ final class CustomCalendarViewDelegate {
 
     int getMinYearMonth() {
         return mMinYearMonth;
+    }
+
+    int getMinYearMonthDay(){
+        return mMinYearMonthDay;
+    }
+
+    int getMaxYearMonthDay() {
+        return mMaxYearMonthDay;
     }
 
     int getMaxYearMonth() {
