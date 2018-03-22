@@ -75,8 +75,7 @@ public abstract class WeekView extends BaseView {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
-                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
-                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+                if (!Util.isCalendarInRange(calendar, mDelegate)) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
                 }
@@ -105,8 +104,7 @@ public abstract class WeekView extends BaseView {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
-                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
-                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+                if (!Util.isCalendarInRange(calendar, mDelegate)) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return false;
                 }
@@ -149,8 +147,7 @@ public abstract class WeekView extends BaseView {
 
         Calendar currentCalendar = mItems.get(week);
 
-        if (!Util.isCalendarInRange(currentCalendar, mDelegate.getMinYear(),
-                mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+        if (!Util.isCalendarInRange(currentCalendar, mDelegate)) {
             mCurrentItem = getEdgeIndex(isLeftEdge(currentCalendar));
             currentCalendar = mItems.get(mCurrentItem);
         }
@@ -180,11 +177,9 @@ public abstract class WeekView extends BaseView {
     private int getEdgeIndex(boolean isMinEdge) {
         for (int i = 0; i < mItems.size(); i++) {
             Calendar item = mItems.get(i);
-            if (isMinEdge && Util.isCalendarInRange(item, mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
-                    mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+            if (isMinEdge && Util.isCalendarInRange(item, mDelegate)) {
                 return i;
-            } else if (!isMinEdge && !Util.isCalendarInRange(item, mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
-                    mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+            } else if (!isMinEdge && !Util.isCalendarInRange(item, mDelegate)) {
                 return i - 1;
             }
         }

@@ -277,11 +277,11 @@ public final class Util {
      * @param maxYearMonth maxYearMonth
      * @return 是否在日期范围內
      */
-    static boolean isCalendarInRange(Calendar calendar, int minYear, int minYearMonth, int maxYear, int maxYearMonth) {
+    static boolean isCalendarInRange(Calendar calendar, int minYear, int minYearMonth, int minYearMonthDay,int maxYear, int maxYearMonth,int maxYearMonthDay) {
         java.util.Calendar c = java.util.Calendar.getInstance();
-        c.set(minYear, minYearMonth - 1, 1);
+        c.set(minYear, minYearMonth - 1, minYearMonthDay);
         long minTime = c.getTimeInMillis();
-        c.set(maxYear, maxYearMonth - 1, getMonthDaysCount(maxYear, maxYearMonth));
+        c.set(maxYear, maxYearMonth - 1, maxYearMonthDay);
         long maxTime = c.getTimeInMillis();
         c.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
         long curTime = c.getTimeInMillis();
@@ -289,8 +289,8 @@ public final class Util {
     }
 
     static boolean isCalendarInRange(Calendar calendar, CustomCalendarViewDelegate delegate) {
-        return isCalendarInRange(calendar, delegate.getMinYear(), delegate.getMinYearMonth(),
-                delegate.getMaxYear(), delegate.getMaxYearMonth());
+        return isCalendarInRange(calendar, delegate.getMinYear(), delegate.getMinYearMonth(),delegate.getMinYearMonthDay(),
+                delegate.getMaxYear(), delegate.getMaxYearMonth(),delegate.getMaxYearMonthDay());
     }
 
     /**

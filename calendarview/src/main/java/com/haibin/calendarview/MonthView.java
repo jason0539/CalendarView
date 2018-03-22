@@ -148,8 +148,7 @@ public abstract class MonthView extends BaseView {
                     return;
                 }
 
-                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
-                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+                if (!Util.isCalendarInRange(calendar, mDelegate)) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
                 }
@@ -194,8 +193,7 @@ public abstract class MonthView extends BaseView {
                     return false;
                 }
 
-                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
-                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+                if (!Util.isCalendarInRange(calendar, mDelegate)) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return false;
                 }
